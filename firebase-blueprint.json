@@ -1,0 +1,200 @@
+{
+  "entities": {
+    "ShopProfile": {
+      "title": "ShopProfile",
+      "description": "Store settings, owner details, store code, and member list for up to 50 staff.",
+      "type": "object",
+      "properties": {
+        "shopName": { "type": "string", "description": "Name of the shop or business." },
+        "ownerName": { "type": "string", "description": "Proprietor or owner full name." },
+        "phone": { "type": "string", "description": "Primary contact number." },
+        "address": { "type": "string", "description": "Physical shop address / market location." },
+        "currency": { "type": "string", "description": "Currency symbol, defaults to ৳." },
+        "memoFooter": { "type": "string", "description": "Custom footer line on printable/shareable invoices." },
+        "storeCode": { "type": "string", "description": "Unique store code (e.g. NSB-8492) for staff login." },
+        "memberUids": { "type": "array", "description": "List of authorized staff UIDs for this shop (up to 50)." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["shopName", "ownerName", "phone", "currency", "createdAt"]
+    },
+    "StaffMember": {
+      "title": "StaffMember",
+      "description": "Employee, manager, partner or co-owner profile with granular permissions and PIN.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Shop owner UID." },
+        "name": { "type": "string", "description": "Staff member name." },
+        "phone": { "type": "string", "description": "Staff contact phone." },
+        "role": { "type": "string", "description": "Role identifier: OWNER, CO_OWNER, PARTNER, MANAGER, CASHIER, STAFF, CUSTOM." },
+        "customTitle": { "type": "string", "description": "Optional custom designation title created by owner." },
+        "permissions": { "type": "array", "description": "List of granted permission keys (sales, dues, stock, expenses, reports, settings, staff)." },
+        "pin": { "type": "string", "description": "4-digit security PIN for shop entry." },
+        "assignedUid": { "type": "string", "description": "Google UID of staff once joined." },
+        "isActive": { "type": "boolean", "description": "Active status." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "name", "role", "pin", "isActive", "createdAt"]
+    },
+    "CustomRole": {
+      "title": "CustomRole",
+      "description": "Admin-defined custom role with permissions, color, and description stored in Firestore.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Shop owner UID." },
+        "roleName": { "type": "string", "description": "Display name of the custom role (e.g. Partner, Storekeeper, Supervisor)." },
+        "roleCode": { "type": "string", "description": "Unique role identifier code." },
+        "description": { "type": "string", "description": "Brief description of responsibilities." },
+        "colorHex": { "type": "string", "description": "Color hex for badge rendering." },
+        "permissions": { "type": "array", "description": "List of granted permission keys." },
+        "isDefault": { "type": "boolean", "description": "Whether this is a built-in system role." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "roleName", "roleCode", "permissions", "createdAt"]
+    },
+    "StoreCodeEntry": {
+      "title": "StoreCodeEntry",
+      "description": "Lookup index for joining a shop by unique store code.",
+      "type": "object",
+      "properties": {
+        "ownerId": { "type": "string", "description": "Shop owner UID." },
+        "shopName": { "type": "string", "description": "Shop display name." },
+        "code": { "type": "string", "description": "Unique code e.g. NSB-8492." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["ownerId", "shopName", "code", "createdAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Item in shop inventory with buying/selling rates and stock levels.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID." },
+        "name": { "type": "string", "description": "Product display name." },
+        "category": { "type": "string", "description": "Category such as Grocery, Medicine, Stationery, Clothes, Electronics." },
+        "buyPrice": { "type": "number", "description": "Purchase cost per unit." },
+        "sellPrice": { "type": "number", "description": "Selling retail price per unit." },
+        "stockQuantity": { "type": "number", "description": "Current on-hand inventory count or quantity." },
+        "unit": { "type": "string", "description": "Measurement unit (পিস, কেজি, লিটার, প্যাকেট, ডজন, ইত্যাদি)." },
+        "lowStockThreshold": { "type": "number", "description": "Alert trigger level when stock is low." },
+        "barcode": { "type": "string", "description": "Optional barcode or SKU code." },
+        "memberUids": { "type": "array", "description": "List of staff UIDs authorized to view/sell." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "name", "category", "buyPrice", "sellPrice", "stockQuantity", "unit", "lowStockThreshold", "createdAt"]
+    },
+    "Customer": {
+      "title": "Customer",
+      "description": "Customer record in dues ledger with phone and running due balance.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID." },
+        "name": { "type": "string", "description": "Customer name." },
+        "phone": { "type": "string", "description": "Customer mobile number for SMS/Call reminder." },
+        "address": { "type": "string", "description": "Customer village/area address." },
+        "totalDue": { "type": "number", "description": "Total outstanding unpaid balance." },
+        "memberUids": { "type": "array", "description": "List of staff UIDs." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "name", "phone", "totalDue", "createdAt"]
+    },
+    "CustomerTransaction": {
+      "title": "CustomerTransaction",
+      "description": "Debit or credit entry for customer dues ledger.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID." },
+        "customerId": { "type": "string", "description": "Target customer ID." },
+        "type": { "type": "string", "enum": ["DUE_GIVEN", "DUE_COLLECTED"], "description": "Transaction nature." },
+        "amount": { "type": "number", "description": "Monetary amount involved." },
+        "balanceAfter": { "type": "number", "description": "Customer total due after this entry." },
+        "note": { "type": "string", "description": "Transaction note or memo description." },
+        "staffName": { "type": "string", "description": "Name of staff who received or gave due." },
+        "memberUids": { "type": "array", "description": "List of staff UIDs." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "customerId", "type", "amount", "balanceAfter", "createdAt"]
+    },
+    "Sale": {
+      "title": "Sale",
+      "description": "Completed point-of-sale transaction and generated digital cash memo.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID." },
+        "invoiceNumber": { "type": "string", "description": "Unique serial memo number." },
+        "customerId": { "type": "string", "description": "Optional customer ID." },
+        "customerName": { "type": "string", "description": "Customer or walk-in buyer name." },
+        "itemsSummary": { "type": "string", "description": "Formatted summary of items sold." },
+        "totalAmount": { "type": "number", "description": "Subtotal before discount." },
+        "discount": { "type": "number", "description": "Discount granted." },
+        "taxRate": { "type": "number", "description": "Tax / VAT percentage applied (e.g. 5, 7.5, 15)." },
+        "taxAmount": { "type": "number", "description": "Calculated Tax / VAT amount in currency." },
+        "grandTotal": { "type": "number", "description": "Final payable amount." },
+        "paidAmount": { "type": "number", "description": "Amount paid upfront." },
+        "dueAmount": { "type": "number", "description": "Amount kept on credit / due." },
+        "paymentMethod": { "type": "string", "description": "Payment channel: CASH, BKASH, NAGAD, DUE, MIXED." },
+        "profit": { "type": "number", "description": "Calculated profit." },
+        "staffName": { "type": "string", "description": "Name of salesman/cashier." },
+        "memberUids": { "type": "array", "description": "List of staff UIDs." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "invoiceNumber", "itemsSummary", "totalAmount", "discount", "grandTotal", "paidAmount", "dueAmount", "paymentMethod", "profit", "createdAt"]
+    },
+    "Expense": {
+      "title": "Expense",
+      "description": "Daily store expense record.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner UID." },
+        "title": { "type": "string", "description": "Expense title or description." },
+        "category": { "type": "string", "description": "Expense category." },
+        "amount": { "type": "number", "description": "Amount spent." },
+        "note": { "type": "string", "description": "Additional note." },
+        "memberUids": { "type": "array", "description": "List of staff UIDs." },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "title", "category", "amount", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}/shop_profile/{profileId}": {
+      "schema": "ShopProfile",
+      "description": "Store configuration, store code, and member list."
+    },
+    "/users/{userId}/staff/{staffId}": {
+      "schema": "StaffMember",
+      "description": "Staff roster (up to 50 employees and managers) with PINs."
+    },
+    "/users/{userId}/custom_roles/{roleId}": {
+      "schema": "CustomRole",
+      "description": "Custom roles and access permissions definitions created by the admin."
+    },
+    "/store_codes/{code}": {
+      "schema": "StoreCodeEntry",
+      "description": "Global store code index for joining shops."
+    },
+    "/users/{userId}/products/{productId}": {
+      "schema": "Product",
+      "description": "Product catalog and stock information."
+    },
+    "/users/{userId}/customers/{customerId}": {
+      "schema": "Customer",
+      "description": "Registered customer accounts for dues management."
+    },
+    "/users/{userId}/customer_transactions/{transactionId}": {
+      "schema": "CustomerTransaction",
+      "description": "Customer credit/debit ledger entries."
+    },
+    "/users/{userId}/sales/{saleId}": {
+      "schema": "Sale",
+      "description": "POS sales history and invoices."
+    },
+    "/users/{userId}/expenses/{expenseId}": {
+      "schema": "Expense",
+      "description": "Operating expense vouchers."
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "summary":  "Implementation plan for modernizing the Point of Sale (POS) billing interface in NSB Dokan Seba with instant product search, robust cart management, configurable tax/VAT calculation, multi-mode payment tender, and digital cash memo generation.",
+  "updatedAt":  "2026-11-10T09:21:29.331771380Z",
+  "requestFeedback":  true,
+  "userFacing":  true
+}

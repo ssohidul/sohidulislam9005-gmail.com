@@ -1,0 +1,6 @@
+{
+  "name": "NSB দোকান সেবা",
+  "description": "NSB এর ব্যবসা পরিচালনা, ডিজিটাল ক্যাশমেমো ও বিলিং (POS), বাকি খাতা ও স্টক ব্যবস্থাপনার অ্যাপ",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
